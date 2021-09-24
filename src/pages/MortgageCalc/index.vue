@@ -42,7 +42,7 @@ export default {
     return {
       initLoan: null,
       downPayment: null,
-      bank: null,
+      targetBank: null,
 
       mortgage: null,
     };
@@ -57,8 +57,10 @@ export default {
   },
   methods: {
     getBank() {
-      if (this.getBanksList.includes(this.bank))
-        return this.getBanksList.filter((item) => item.bankName === this.bank);
+      const filter = String(this.targetBank).toLowerCase();
+      return this.getBanksList.filter((item) =>
+        item.bankName.toLowerCase().startsWith(filter)
+      );
     },
     calculate() {
       const loan = this.initLoan - this.downPayment;
