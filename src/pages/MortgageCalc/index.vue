@@ -17,7 +17,7 @@
         >0 ></v-text-field
       >
 
-      <v-select :items="getBanksList" label="Choose the bank"></v-select>
+      <v-text-field label=" Bank" type="text" v-model="bank"></v-text-field>
     </div>
 
     <div>
@@ -25,6 +25,8 @@
         CALCULATE
       </v-btn>
     </div>
+
+    <div>{{ mortgage }}</div>
   </div>
 </template>
 
@@ -37,6 +39,7 @@ export default {
       initLoan: null,
       downPayment: null,
       bank: null,
+
       mortgage: null,
     };
   },
@@ -44,13 +47,19 @@ export default {
     ...mapGetters("banks", ["getBanksList"]),
   },
   methods: {
+    getBank() {
+      if (this.getBanksList.includes(this.bank))
+        return this.getBanksList.filter((item) => item.bankName === this.bank);
+    },
     calculate() {
       const loan = this.initLoan - this.downPayment;
+      const loanterm = this.getBank().loanTerm;
+      const interestrate = this.getBank().interestRate;
       return (this.mortgage =
         (loan *
           (this.bank.interestRate / 12) *
-          Math.pow(1 + this.bank.interestRate / 12, this.bank.loanTerm)) /
-        (Math.pow(1 + this.bank.interestRate / 12, this.bank.loanTerm) - 1));
+          Math.pow(1 + interestrate / 12, loanterm)) /
+        (Math.pow(1 + interestrate / 12, loanterm) - 1));
     },
   },
 };
