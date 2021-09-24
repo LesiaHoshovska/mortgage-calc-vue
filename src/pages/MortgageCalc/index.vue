@@ -45,8 +45,9 @@ export default {
   },
   methods: {
     calculate() {
+      const loan = this.initLoan - this.downPayment;
       return (this.mortgage =
-        (this.p *
+        (loan *
           (this.bank.interestRate / 12) *
           Math.pow(1 + this.bank.interestRate / 12, this.bank.loanTerm)) /
         (Math.pow(1 + this.bank.interestRate / 12, this.bank.loanTerm) - 1));
