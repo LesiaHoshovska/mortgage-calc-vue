@@ -25,12 +25,12 @@
     </div>
 
     <div>
-      <v-btn rounded color="primary" dark @click="calculate">
+      <v-btn rounded color="primary" dark @click="calculate()">
         CALCULATE
       </v-btn>
     </div>
 
-    <div>{{ mortgage }}</div>
+    <div>{{}}</div>
   </div>
 </template>
 
@@ -43,7 +43,6 @@ export default {
       initLoan: null,
       downPayment: null,
       targetBank: null,
-
       mortgage: null,
     };
   },
@@ -64,13 +63,17 @@ export default {
 
     calculate() {
       const loan = this.initLoan - this.downPayment;
-      const loanterm = this.targetBank.loanTerm;
-      const interestrate = this.targetBank.interestRate;
-      return (this.mortgage =
+      console.log(loan);
+      const loanterm = parseInt(this.targetBank.loanTerm);
+      console.log(loanterm);
+      const interestrate = parseInt(this.targetBank.interestRate);
+      this.mortgage =
         (loan *
           (interestrate / 12) *
           Math.pow(1 + interestrate / 12, loanterm)) /
-        (Math.pow(1 + interestrate / 12, loanterm) - 1));
+        (Math.pow(1 + interestrate / 12, loanterm) - 1);
+      console.log(this.mortgage);
+      console.log(loanterm);
     },
   },
 };
