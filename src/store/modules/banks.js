@@ -17,7 +17,7 @@ export default {
   },
   mutations: {
     setBanksList(state, list) {
-      state.productsList = list;
+      state.banksList = list;
     },
     setEditedObj(state, obj) {
       state.editedObj = obj;

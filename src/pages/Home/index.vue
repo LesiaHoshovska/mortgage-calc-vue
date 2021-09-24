@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="header">
       <h1>Our Banks</h1>
 
       <div v-if="isLoading">Loading...</div>
@@ -8,7 +8,7 @@
       <div v-if="!isLoading && !hasError" class="content">
         <div>
           <label>
-            Search Bank
+            Search bank:
             <input type="text" v-model.lazy="searchBank" />
           </label>
         </div>
@@ -22,7 +22,7 @@
             :maxLoan="bank.maxLoan"
             :minDownPayment="bank.minDownPayment"
             :loanTerm="bank.loanTerm"
-            class="bankcard"
+            class="bankCard"
           />
         </div>
       </div>
@@ -43,7 +43,6 @@ export default {
   data() {
     return {
       searchBank: null,
-      updateKey: null,
     };
   },
   computed: {
@@ -57,7 +56,6 @@ export default {
           filter_value: newValue,
         });
       else this.loadBanks();
-      this.updateKey++;
     },
   },
   methods: {
@@ -76,7 +74,10 @@ export default {
   justify-self: center;
   justify-content: center;
 }
-.bankcard {
+.bankCard {
   padding: 10px;
+}
+.header {
+  text-align: center;
 }
 </style>
