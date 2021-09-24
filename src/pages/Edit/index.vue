@@ -7,11 +7,13 @@
       <v-text-field
         label="Bank name:"
         type="text"
+        :rules="rules"
         v-model="bankName"
       ></v-text-field>
       <v-text-field
         label="Interest Rate:"
         type="number"
+        :rules="rules1"
         v-model.number="interestRate"
         min
         >0 ></v-text-field
@@ -19,6 +21,7 @@
       <v-text-field
         label=" Maximum Loan:"
         type="number"
+        :rules="rules1"
         v-model.number="maxLoan"
         min
         >0></v-text-field
@@ -27,11 +30,13 @@
         label=" Minimum Down Payment:"
         type="number"
         v-model.number="minDownPayment"
+        :rules="rules1"
       ></v-text-field>
       <v-text-field
         label="Loan Term:"
         type="number"
         v-model.number="loanTerm"
+        :rules="rules1"
       ></v-text-field>
 
       <div>
@@ -44,7 +49,6 @@
         >
           {{ btnTitle }}
         </v-btn>
-        <button></button>
       </div>
       <div v-if="errorMessage">{{ errorMessage }}</div>
     </div>
@@ -57,6 +61,11 @@ export default {
   name: "Edit",
   data() {
     return {
+      rules: [
+        (value) => !!value || "Required.",
+        (value) => (value && value.length >= 3) || "Min 3 characters",
+      ],
+      rules1: [(value) => value >= 1 || "Must be under 0"],
       bankName: null,
       interestRate: null,
       maxLoan: null,
