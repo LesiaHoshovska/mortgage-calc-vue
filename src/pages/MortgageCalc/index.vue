@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "MortgageCalc",
   data() {
@@ -51,17 +51,17 @@ export default {
     ...mapGetters("banks", ["getBanksList"]),
   },
   watch: {
-    targetBank() {
-      this.getBank();
+    targetBank(newValue) {
+      if (newValue)
+        this.loadBanks({
+          filter_property: "bankName",
+          filter_value: newValue,
+        });
     },
   },
   methods: {
-    getBank() {
-      const filter = String(this.targetBank).toLowerCase();
-      return this.getBanksList.filter((item) =>
-        item.bankName.toLowerCase().startsWith(filter)
-      );
-    },
+    ...mapActions("banks", ["loadBanks"]),
+
     calculate() {
       const loan = this.initLoan - this.downPayment;
       const loanterm = this.targetBank.loanTerm;
