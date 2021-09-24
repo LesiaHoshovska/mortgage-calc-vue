@@ -17,7 +17,11 @@
         >0 ></v-text-field
       >
 
-      <v-text-field label=" Bank" type="text" v-model="bank"></v-text-field>
+      <v-text-field
+        label=" Bank"
+        type="text"
+        v-model="targetBank"
+      ></v-text-field>
     </div>
 
     <div>
@@ -46,6 +50,11 @@ export default {
   computed: {
     ...mapGetters("banks", ["getBanksList"]),
   },
+  watch: {
+    targetBank() {
+      this.getBank();
+    },
+  },
   methods: {
     getBank() {
       if (this.getBanksList.includes(this.bank))
@@ -53,11 +62,11 @@ export default {
     },
     calculate() {
       const loan = this.initLoan - this.downPayment;
-      const loanterm = this.getBank().loanTerm;
-      const interestrate = this.getBank().interestRate;
+      const loanterm = this.targetBank.loanTerm;
+      const interestrate = this.targetBank.interestRate;
       return (this.mortgage =
         (loan *
-          (this.bank.interestRate / 12) *
+          (interestrate / 12) *
           Math.pow(1 + interestrate / 12, loanterm)) /
         (Math.pow(1 + interestrate / 12, loanterm) - 1));
     },
