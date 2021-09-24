@@ -13,21 +13,21 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="orange" text @click="onEdit(bank._id)"> Edit </v-btn>
+        <v-btn color="orange" text @click="onEdit(bankId)"> Edit </v-btn>
 
-        <v-btn color="orange" text @click="onDelete(bank._id)"> Delete </v-btn>
+        <v-btn color="orange" text @click="onDelete(bankId)"> Delete </v-btn>
       </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BankCard",
   props: {
     bankId: {
-      type: Number,
+      type: String,
       required: true,
     },
     bankName: {
@@ -55,6 +55,9 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    ...mapGetters("banks", ["getBanksList", "isLoading", "hasError"]),
+  },
 
   methods: {
     ...mapActions("banks", ["deleteBank"]),
@@ -62,7 +65,7 @@ export default {
       this.deleteBank(id);
     },
     onEdit(id) {
-      this.$router.push({ name: "edit", params: { id } });
+      this.$router.push({ name: "edit", params: { bank_id: id } });
     },
   },
 };
