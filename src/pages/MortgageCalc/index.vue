@@ -3,6 +3,7 @@
     <div>
       <h1>Calculate you mortgage</h1>
     </div>
+
     <div>
       <v-text-field
         label="Initial loan:"
@@ -13,15 +14,18 @@
         label="Down payment :"
         type="number"
         v-model.number="downPayment"
-        min
-        >0 ></v-text-field
-      >
-
-      <v-text-field
-        label=" Bank"
-        type="text"
-        v-model="targetBank"
       ></v-text-field>
+      <v-select
+        :items="getBanksList"
+        return-object
+        label="Select Bank"
+      ></v-select>
+
+      <!-- <select v-model="targetBank">
+        <option v-for="bank in getBanksList" :key="bank.id" :value="bank._id">
+          {{ bank.bankName }}
+        </option>
+      </select> -->
     </div>
 
     <div>
@@ -44,7 +48,10 @@ export default {
   name: "MortgageCalc",
   data() {
     return {
-      items: [],
+      arr: () => ({
+        items: this.getBanksByName,
+      }),
+
       initLoan: null,
       downPayment: null,
       targetBank: null,
@@ -54,56 +61,42 @@ export default {
       minDownPayment: null,
       loanTerm: null,
       result: null,
-      //
       error: null,
     };
   },
   computed: {
-    ...mapGetters("banks", ["getBanksList", "getBankByName"]),
-  },
-  watch: {
-    targetBank(newValue) {
-      if (newValue)
-        this.loadBanks({
-          filter_property: "bankName",
-          filter_value: newValue,
-        });
-      console.log(this.targetBank);
-    },
+    ...mapGetters("banks", ["getBanksList", "getBanksByName"]),
   },
   methods: {
-    ...mapActions("banks", ["loadBanks"]),
-
-    calculate() {
-      const bank = this.getBankByName(this.targetBank);
-      console.log(bank);
-
-      this.bankName = bank.bankName;
-      this.interestRate = parseInt(bank.interestRate);
-      this.maxLoan = parseInt(bank.maxLoan);
-      this.minDownPayment = parseInt(bank.minDownPayment);
-      this.loanTerm = parseInt(bank.loanTerm);
-
+    ...mapActions("banks", ["findBankById"]),
+    async calculate() {
+      if (this.targetBank) {
+        const resData = await this.findBankById(this.targetBank);
+        this.bankName = resData.bankName;
+        this.interestRate = resData.interestRate;
+        this.maxLoan = resData.maxLoan;
+        this.minDownPayment = resData.minDownPayment;
+        this.loanTerm = resData.loanTerm;
+      }
       if (this.initLoan && this.downPayment) {
         if (
-          this.initialLoan < this.maxLoan &&
+          this.initLoan < this.maxLoan &&
           this.downPayment > this.minDownPayment
         ) {
           let rate = this.interestRate / 100 / 12;
           this.result = (
-            (this.initialLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
+            (this.initLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
             (Math.pow(1 + rate, this.loanTerm) - 1)
           ).toFixed(2);
-          console.log(this.result);
-          return this.result;
         }
       } else {
         this.error = "Please enter values";
       }
     },
   },
+
   mounted() {
-    this.loadBanks();
+    this.getBanksList;
   },
 };
 </script>
