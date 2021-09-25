@@ -63,28 +63,25 @@ export default {
   methods: {
     ...mapActions("banks", ["getBankById", "loadBanks"]),
     async calculate() {
-      if (this.targetBank) {
-        const resData = await this.getBankById(this.targetBank._id);
-        this.bankName = resData.bankName;
-        this.interestRate = parseFloat(resData.interestRate);
-        this.maxLoan = parseFloat(resData.maxLoan);
-        this.minDownPayment = parseFloat(resData.minDownPayment);
-        this.loanTerm = parseFloat(resData.loanTerm);
-      }
-      if (this.initLoan && this.downPayment) {
-        if (
-          this.initLoan < this.maxLoan &&
-          this.downPayment > this.minDownPayment
-        ) {
-          let rate = this.interestRate / 100 / 12;
-          this.result = (
-            (this.initLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
-            (Math.pow(1 + rate, this.loanTerm) - 1)
-          ).toFixed(2);
-        }
-      } else {
-        this.error = "Please enter values";
-      }
+      const resData = await this.getBankById(this.targetBank._id);
+      this.bankName = resData.bankName;
+      this.interestRate = parseFloat(resData.interestRate);
+      this.maxLoan = parseFloat(resData.maxLoan);
+      this.minDownPayment = parseFloat(resData.minDownPayment);
+      this.loanTerm = parseFloat(resData.loanTerm);
+      let rate = this.interestRate / 100 / 12;
+      console.log(rate);
+      if (
+        this.initialLoan < this.maximumLoan &&
+        this.downPayment > this.minimumDownPayment
+      )
+        this.result = (
+          (this.initLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
+          (Math.pow(1 + rate, this.loanTerm) - 1)
+        ).toFixed(2);
+      else this.result = "Enter valid data";
+
+      console.log(this.result);
     },
   },
 
