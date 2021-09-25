@@ -30,7 +30,11 @@
       </v-btn>
     </div>
 
-    <div>{{}}</div>
+    <div v-if="result">
+      result -
+      {{ result }}
+    </div>
+    <div v-if="error">{{ error }}</div>
   </div>
 </template>
 
@@ -43,7 +47,14 @@ export default {
       initLoan: null,
       downPayment: null,
       targetBank: null,
-      mortgage: null,
+      bankName: null,
+      interestRate: null,
+      maxLoan: null,
+      minDownPayment: null,
+      loanTerm: null,
+      result: null,
+      //
+      error: null,
     };
   },
   computed: {
@@ -59,22 +70,36 @@ export default {
     },
   },
   methods: {
-    ...mapActions("banks", ["loadBanks"]),
+    ...mapActions("banks", ["getBankById", "loadBanks"]),
 
-    calculate() {
-      const loan = this.initLoan - this.downPayment;
-      console.log(loan);
-      const loanterm = parseInt(this.targetBank.loanTerm);
-      console.log(loanterm);
-      const interestrate = parseInt(this.targetBank.interestRate);
-      this.mortgage =
-        (loan *
-          (interestrate / 12) *
-          Math.pow(1 + interestrate / 12, loanterm)) /
-        (Math.pow(1 + interestrate / 12, loanterm) - 1);
-      console.log(this.mortgage);
-      console.log(loanterm);
+    async calculate() {
+      if (this.targetBank) {
+        const resData = await this.getBankById(this.targetBank);
+        this.bankName = resData.bankName;
+        this.interestRate = resData.interestRate;
+        this.maxLoan = resData.maxLoan;
+        this.minDownPayment = resData.minDownPayment;
+        this.loanTerm = resData.loanTerm;
+      }
+      if (this.initLoan && this.downPayment) {
+        if (
+          this.initialLoan < this.maxLoan &&
+          this.downPayment > this.minDownPayment
+        ) {
+          let rate = this.interestRate / 100 / 12;
+          this.result = (
+            (this.initialLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
+            (Math.pow(1 + rate, this.loanTerm) - 1)
+          ).toFixed(2);
+        }
+      } else {
+        this.error = "Please enter values";
+      }
     },
+  },
+
+  mounted() {
+    this.getBanksList;
   },
 };
 </script>
