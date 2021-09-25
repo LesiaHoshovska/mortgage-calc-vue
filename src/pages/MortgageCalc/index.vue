@@ -67,11 +67,12 @@ export default {
           filter_property: "bankName",
           filter_value: newValue,
         });
+      console.log(this.targetBank);
+      console.log(this.targetBank._id);
     },
   },
   methods: {
     ...mapActions("banks", ["getBankById", "loadBanks"]),
-
     calculate() {
       if (this.targetBank) {
         this.bankName = this.targetBank.bankName;
@@ -97,7 +98,6 @@ export default {
       }
     },
   },
-
   mounted() {
     this.loadBanks();
   },
