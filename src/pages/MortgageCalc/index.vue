@@ -15,17 +15,13 @@
         type="number"
         v-model.number="downPayment"
       ></v-text-field>
-      <v-select
-        :items="getBanksList"
-        return-object
-        label="Select Bank"
-      ></v-select>
 
-      <!-- <select v-model="targetBank">
-        <option v-for="bank in getBanksList" :key="bank.id" :value="bank._id">
-          {{ bank.bankName }}
-        </option>
-      </select> -->
+      <v-select
+        :items="getBanksByName"
+        v-model="targetBank"
+        label="Select Bank"
+        dense
+      ></v-select>
     </div>
 
     <div>
@@ -48,10 +44,6 @@ export default {
   name: "MortgageCalc",
   data() {
     return {
-      arr: () => ({
-        items: this.getBanksByName,
-      }),
-
       initLoan: null,
       downPayment: null,
       targetBank: null,
