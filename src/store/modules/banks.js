@@ -15,7 +15,7 @@ export default {
     isLoading: (state) => state.loading,
     hasError: (state) => state.error,
     getBankByName: (state) => (name) =>
-      state.banksList.filter((item) => item.bankName === name),
+      state.banksList.find((item) => item.bankName === name),
   },
   mutations: {
     setBanksList(state, list) {

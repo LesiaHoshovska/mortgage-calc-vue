@@ -77,13 +77,13 @@ export default {
     calculate() {
       const bank = this.getBankByName(this.targetBank);
       console.log(bank);
-      if (this.targetBank) {
-        this.bankName = bank.bankName;
-        this.interestRate = parseInt(bank.interestRate);
-        this.maxLoan = parseInt(bank.maxLoan);
-        this.minDownPayment = parseInt(bank.minDownPayment);
-        this.loanTerm = parseInt(bank.loanTerm);
-      }
+
+      this.bankName = bank.bankName;
+      this.interestRate = parseInt(bank.interestRate);
+      this.maxLoan = parseInt(bank.maxLoan);
+      this.minDownPayment = parseInt(bank.minDownPayment);
+      this.loanTerm = parseInt(bank.loanTerm);
+
       if (this.initLoan && this.downPayment) {
         if (
           this.initialLoan < this.maxLoan &&
@@ -94,6 +94,7 @@ export default {
             (this.initialLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
             (Math.pow(1 + rate, this.loanTerm) - 1)
           ).toFixed(2);
+          console.log(this.result);
           return this.result;
         }
       } else {
