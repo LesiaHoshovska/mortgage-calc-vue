@@ -17,7 +17,7 @@
       ></v-text-field>
 
       <v-select
-        :items="getBanksByName"
+        :items="getBanksList"
         v-model="targetBank"
         label="Select Bank"
         dense
@@ -29,12 +29,13 @@
         CALCULATE
       </v-btn>
     </div>
-
-    <div v-if="result">
+    <v-text-field v-model="result" label="You must pay"></v-text-field>
+    <!-- <div v-if="result">
       result -
       {{ result }}
     </div>
     <div v-if="error">{{ error }}</div>
+  </div> -->
   </div>
 </template>
 
@@ -57,18 +58,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("banks", ["getBanksList", "getBanksByName"]),
+    ...mapGetters("banks", ["getBanksList"]),
   },
   methods: {
-    ...mapActions("banks", ["findBankById"]),
+    ...mapActions("banks", ["getBankById", "loadBanks"]),
     async calculate() {
       if (this.targetBank) {
-        const resData = await this.findBankById(this.targetBank);
+        const resData = await this.getBankById(this.targetBank._id);
         this.bankName = resData.bankName;
-        this.interestRate = resData.interestRate;
-        this.maxLoan = resData.maxLoan;
-        this.minDownPayment = resData.minDownPayment;
-        this.loanTerm = resData.loanTerm;
+        this.interestRate = parseFloat(resData.interestRate);
+        this.maxLoan = parseFloat(resData.maxLoan);
+        this.minDownPayment = parseFloat(resData.minDownPayment);
+        this.loanTerm = parseFloat(resData.loanTerm);
       }
       if (this.initLoan && this.downPayment) {
         if (
@@ -88,7 +89,7 @@ export default {
   },
 
   mounted() {
-    this.getBanksList;
+    this.loadBanks();
   },
 };
 </script>

@@ -65,7 +65,9 @@
     </v-app-bar>
 
     <div class="container">
-      <router-view></router-view>
+      <v-app>
+        <router-view></router-view>
+      </v-app>
     </div>
   </div>
 </template>
