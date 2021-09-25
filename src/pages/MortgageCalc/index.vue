@@ -44,6 +44,7 @@ export default {
   name: "MortgageCalc",
   data() {
     return {
+      items: [],
       initLoan: null,
       downPayment: null,
       targetBank: null,
@@ -58,7 +59,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("banks", ["getBanksList"]),
+    ...mapGetters("banks", ["getBanksList", "getBankByName"]),
   },
   watch: {
     targetBank(newValue) {
@@ -68,18 +69,20 @@ export default {
           filter_value: newValue,
         });
       console.log(this.targetBank);
-      console.log(this.targetBank._id);
     },
   },
   methods: {
-    ...mapActions("banks", ["getBankById", "loadBanks"]),
+    ...mapActions("banks", ["loadBanks"]),
+
     calculate() {
+      const bank = this.getBankByName(this.targetBank);
+      console.log(bank);
       if (this.targetBank) {
-        this.bankName = this.targetBank.bankName;
-        this.interestRate = this.targetBank.interestRate;
-        this.maxLoan = this.targetBank.maxLoan;
-        this.minDownPayment = this.targetBank.minDownPayment;
-        this.loanTerm = this.targetBank.loanTerm;
+        this.bankName = bank.bankName;
+        this.interestRate = parseInt(bank.interestRate);
+        this.maxLoan = parseInt(bank.maxLoan);
+        this.minDownPayment = parseInt(bank.minDownPayment);
+        this.loanTerm = parseInt(bank.loanTerm);
       }
       if (this.initLoan && this.downPayment) {
         if (

@@ -14,8 +14,8 @@ export default {
     getEditedObj: (state) => state.editedObj,
     isLoading: (state) => state.loading,
     hasError: (state) => state.error,
-    getBanksNameList: (state) =>
-      state.banksList.filter((item) => item.bankName),
+    getBankByName: (state) => (name) =>
+      state.banksList.filter((item) => item.bankName === name),
   },
   mutations: {
     setBanksList(state, list) {
