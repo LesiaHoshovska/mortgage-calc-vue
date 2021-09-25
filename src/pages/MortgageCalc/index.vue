@@ -90,6 +90,7 @@ export default {
             (this.initialLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
             (Math.pow(1 + rate, this.loanTerm) - 1)
           ).toFixed(2);
+          return this.result;
         }
       } else {
         this.error = "Please enter values";
@@ -98,7 +99,7 @@ export default {
   },
 
   mounted() {
-    this.getBanksList;
+    this.loadBanks();
   },
 };
 </script>
