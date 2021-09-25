@@ -72,14 +72,13 @@ export default {
   methods: {
     ...mapActions("banks", ["getBankById", "loadBanks"]),
 
-    async calculate() {
+    calculate() {
       if (this.targetBank) {
-        const resData = await this.getBankById(this.targetBank);
-        this.bankName = resData.bankName;
-        this.interestRate = resData.interestRate;
-        this.maxLoan = resData.maxLoan;
-        this.minDownPayment = resData.minDownPayment;
-        this.loanTerm = resData.loanTerm;
+        this.bankName = this.targetBank.bankName;
+        this.interestRate = this.targetBank.interestRate;
+        this.maxLoan = this.targetBank.maxLoan;
+        this.minDownPayment = this.targetBank.minDownPayment;
+        this.loanTerm = this.targetBank.loanTerm;
       }
       if (this.initLoan && this.downPayment) {
         if (
