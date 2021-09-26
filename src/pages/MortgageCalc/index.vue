@@ -32,12 +32,6 @@
       </v-btn>
     </div>
     <v-text-field v-model="result" label="You must pay"></v-text-field>
-    <!-- <div v-if="result">
-      result -
-      {{ result }}
-    </div>
-    <div v-if="error">{{ error }}</div>
-  </div> -->
   </div>
 </template>
 
