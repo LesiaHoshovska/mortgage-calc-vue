@@ -17,7 +17,7 @@
       ></v-text-field>
 
       <v-select
-        :items="getBanksList"
+        :items="getBanksByName"
         v-model="targetBank"
         label="Select Bank"
         dense
@@ -58,7 +58,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("banks", ["getBanksList"]),
+    ...mapGetters("banks", ["getBanksList", "getBanksByName"]),
   },
   methods: {
     ...mapActions("banks", ["getBankById", "loadBanks"]),
@@ -72,8 +72,8 @@ export default {
       let rate = this.interestRate / 100 / 12;
       console.log(rate);
       if (
-        this.initialLoan < this.maximumLoan &&
-        this.downPayment > this.minimumDownPayment
+        this.initLoan <= this.maxLoan &&
+        this.downPayment >= this.minDownPayment
       )
         this.result = (
           (this.initLoan * rate * Math.pow(1 + rate, this.loanTerm)) /
