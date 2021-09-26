@@ -8,11 +8,13 @@
       <v-text-field
         label="Initial loan:"
         type="number"
+        :rules="rules"
         v-model.number="initLoan"
       ></v-text-field>
       <v-text-field
         label="Down payment :"
         type="number"
+        :rules="rules"
         v-model.number="downPayment"
       ></v-text-field>
 
@@ -45,6 +47,10 @@ export default {
   name: "MortgageCalc",
   data() {
     return {
+      rules: [
+        (value) => !!value || "Required.",
+        (value) => (value && value >= 0) || "Must be under 0",
+      ],
       initLoan: null,
       downPayment: null,
       targetBank: null,
