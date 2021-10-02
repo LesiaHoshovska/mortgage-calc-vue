@@ -102,7 +102,7 @@ export default {
     async onSave() {
       this.errorMessage = "";
       try {
-        if (this.isediting) {
+        if (this.isEditing) {
           await this.updateBank({
             bankName: this.bankName,
             interestRate: this.interestRate,
