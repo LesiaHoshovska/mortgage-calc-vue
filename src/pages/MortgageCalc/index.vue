@@ -19,10 +19,14 @@
       ></v-text-field>
 
       <v-select
-        :items="getBanksByName"
         v-model="targetBank"
+        :items="getBanksList"
+        item-text="bankName"
+        item-value="_id"
         label="Select Bank"
-        dense
+        persistent-hint
+        return-object
+        single-line
       ></v-select>
     </div>
 
@@ -58,10 +62,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("banks", ["getBanksList", "getBanksByName"]),
+    ...mapGetters("banks", ["getBanksList"]),
   },
   methods: {
     ...mapActions("banks", ["getBankById", "loadBanks"]),
+    // getBanksByName() {
+    //   return this.getBanksList.map((item) => item.bankName);
+    // },
     async calculate() {
       const resData = await this.getBankById(this.targetBank._id);
       this.bankName = resData.bankName;
@@ -71,6 +78,7 @@ export default {
       this.loanTerm = parseFloat(resData.loanTerm);
       let rate = this.interestRate / 100 / 12;
       console.log(rate);
+
       if (
         this.initLoan <= this.maxLoan &&
         this.downPayment >= this.minDownPayment
